@@ -10,3 +10,5 @@ run:
 	qemu-system-x86_64 -hda hda.img -m 512M
 debug:
 	qemu-system-x86_64 -hda hda.img -m 512M -s -S
+createimg:
+	qemu-img create -f raw hda.img 1M
