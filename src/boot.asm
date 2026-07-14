@@ -72,7 +72,7 @@ pop cx
 pop si
 ret
 next_line:
-inc [cursor_y]
+inc word [cursor_y]
 push ax
 mov ax,0
 mov word [cursor_x],ax
