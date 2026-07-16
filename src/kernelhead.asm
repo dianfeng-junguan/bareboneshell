@@ -1,4 +1,5 @@
 extern main
+global kernelhead_start
 bits 32
 jmp kernelhead_start
 kernelhead_start:
