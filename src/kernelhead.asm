@@ -9,5 +9,17 @@ mov ds,ax
 mov es,ax
 mov ax,0x18
 mov ss,ax
+
+; set up idt
+
 jmp main
 jmp $
+
+section .data
+global idt
+global idtr
+idtr:
+    dw 0x7ff ; =0x800-1
+    dd idt
+idt:
+    times 256 dq 0
