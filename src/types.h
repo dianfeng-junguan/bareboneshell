@@ -8,5 +8,6 @@
 #define UINT8 unsigned char
 #define UINT16 unsigned short
 #define UINT32 unsigned int
+#define ULLONG unsigned long long
 
 #endif

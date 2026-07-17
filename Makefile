@@ -1,8 +1,8 @@
-SRC_DIR = src/
-BIN_DIR = bin/
+SRC_DIR = src
+BIN_DIR = bin
 CC_SOURCES := $(wildcard $(SRC_DIR)/*.c)
 CC_OBJECTS := $(patsubst $(SRC_DIR)/%.c,$(BIN_DIR)/%.o,$(CC_SOURCES))
-KERNEL_CFLAGS = -g -m32 -fno-pie -nostdlib -fno-leading-underscore -fno-builtin -ffreestanding -Wall -Wextra -Werror -nostartfiles -fno-stack-protector -msoft-float -mno-80387 -mno-sse -mno-mmx
+KERNEL_CFLAGS = -g -m32 -fno-pie -nostdlib -fno-leading-underscore -fno-builtin -ffreestanding -Wall -Wextra -Werror -nostartfiles -fno-stack-protector -msoft-float -mno-80387 -mno-sse -mno-mmx -MMD -MP
 
 ifeq ($(shell uname), Darwin)
 	CC = i686-elf-gcc
@@ -25,13 +25,15 @@ else
 		NASM_TARGET = elf32
 	endif
 endif 
-.PHONY: all printos
+.PHONY: all
 all: load
 bootloader:
 	nasm $(SRC_DIR)/boot.asm -o $(BIN_DIR)/boot.bin -f bin -g
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) -c $< -o $@ $(KERNEL_CFLAGS)
+
+-include $(wildcard $(BIN_DIR)/*.d)
 
 $(BIN_DIR)/kernelhead.o: $(SRC_DIR)/kernelhead.asm
 	nasm $< -o $@ -f $(NASM_TARGET) -g
