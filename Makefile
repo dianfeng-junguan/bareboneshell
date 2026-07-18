@@ -2,7 +2,7 @@ SRC_DIR = src
 BIN_DIR = bin
 CC_SOURCES := $(wildcard $(SRC_DIR)/*.c)
 CC_OBJECTS := $(patsubst $(SRC_DIR)/%.c,$(BIN_DIR)/%.o,$(CC_SOURCES))
-KERNEL_CFLAGS = -g -m32 -fno-pie -nostdlib -fno-leading-underscore -fno-builtin -ffreestanding -Wall -Wextra -Werror -nostartfiles -fno-stack-protector -msoft-float -mno-80387 -mno-sse -mno-mmx -MMD -MP
+KERNEL_CFLAGS = -g -m32 -fno-pie -nostdlib -fno-leading-underscore -fno-builtin -ffreestanding -Wall -Wextra -Wpedantic -nostartfiles -fno-stack-protector -msoft-float -mno-80387 -mno-sse -mno-mmx -MMD -MP
 
 ifeq ($(shell uname), Darwin)
 	CC = i686-elf-gcc
@@ -50,6 +50,6 @@ load:program
 run:
 	qemu-system-x86_64 -hda hda.img -m 512M
 debug:
-	qemu-system-x86_64 -hda hda.img -m 512M -s -S
+	qemu-system-i386 -hda hda.img -m 512M -s -S
 createimg:
 	qemu-img create -f raw hda.img 1M

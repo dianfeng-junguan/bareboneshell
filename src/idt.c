@@ -103,7 +103,6 @@ void idt_set_idt_entry(int index, idt_gate_descriptor32 desc){
 
 /* Exception handlers: a minimal set for CPU exceptions 0..20.
    Use GCC's interrupt attribute so compiler generates proper IRET. */
-#define INTERRUPT __attribute__((interrupt))
 
 INTERRUPT void isr0_divide(interrupt_frame_t* frame){
     (void)frame;
@@ -137,7 +136,7 @@ INTERRUPT void isr20_virtualization(interrupt_frame_t* frame){ (void)frame; for(
 // pic handlers
 
 INTERRUPT void irq0_timer(interrupt_frame_t* frame){ (void)frame; idt_pic_eoi(); }
-INTERRUPT void irq1_keyboard(interrupt_frame_t* frame){ (void)frame; idt_pic_eoi(); }
+extern INTERRUPT void irq1_keyboard(interrupt_frame_t* frame);
 INTERRUPT void irq2_cascade(interrupt_frame_t* frame){ (void)frame; idt_pic_eoi(); }
 INTERRUPT void irq3_serial2(interrupt_frame_t* frame){ (void)frame; idt_pic_eoi(); }
 INTERRUPT void irq4_serial1(interrupt_frame_t* frame){ (void)frame; idt_pic_eoi(); }

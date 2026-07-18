@@ -40,8 +40,10 @@ typedef struct {
 #define IDT_FLAG_TRAP32 0x8f
 #define IDT_FLAG_TASK 0x85
 
+#define INTERRUPT __attribute__((interrupt))
 
 void idt_fill_descriptor(idt_gate_descriptor32* desc,UINT32 offset,UINT16 selector, UINT8 flags);
 void idt_set_idt_entry(int index, idt_gate_descriptor32 desc);
 void idt_init_pic();
+void idt_pic_eoi();
 void idt_init();

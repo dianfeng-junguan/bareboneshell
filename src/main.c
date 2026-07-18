@@ -36,7 +36,6 @@ void print(char* str,char color){
 #define PANIC(msg) do{print("PANIC: " msg "\n", COLOR_RED);while(1);}while(0)
 #include "ps2.h"
 int main(){
-    // __asm__ volatile("sti");
     print("bareshell c main running\n", COLOR_GRAY);
     print("test\ttab\ta\n", COLOR_GRAY);
     // init idt
@@ -46,5 +45,6 @@ int main(){
         PANIC("ps2 init failed");
     }
     print("ps2 init success\n", COLOR_GREEN);
-    while(1);
+    while(1){
+    }
 }

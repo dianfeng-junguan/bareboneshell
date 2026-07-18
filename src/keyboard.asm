@@ -11,19 +11,20 @@ global ps2_enable_second
 global ps2_disable
 global ps2_flush_output
 global ps2_reset_device
+global ps2_enable_scanning
 PS2_DATA equ 0x60
 PS2_STATUS equ 0x64
 PS2_COMMAND equ 0x64
 ps2_send_command:
 ; edi=command
-push dx
+push edx
 mov dx,PS2_COMMAND
 mov ax,di
 out dx,al
-pop dx
+pop edx
 ret
 ps2_read_configure_byte:
-push dx
+push edx
 ; eax=config byte
 ; read config byte
 mov al,0x20
@@ -39,16 +40,17 @@ je .wait
 
 ; start reading
 mov dx,PS2_DATA
+mov ax,0
 in al,dx
 
-pop dx
+pop edx
 ret
 
 ps2_write_configure_byte:
-push di
+push edi
 ;edi = byte
-push dx
-mov di,[esp+12]
+push edx
+mov edi,[esp+12]
 ; write back
 mov dx,PS2_COMMAND
 mov al,0x60
@@ -65,11 +67,11 @@ mov ax,di
 mov dx,PS2_DATA
 out dx,al
 
-pop dx
-pop di
+pop edx
+pop edi
 ret
 ps2_self_test:
-push dx
+push edx
 ; perform self test
 mov dx,PS2_COMMAND
 mov al,0xaa
@@ -88,15 +90,15 @@ cmp al,0x55
 jne .kb_self_test_failure
 
 mov eax,0
-pop dx
+pop edx
 ret
 .kb_self_test_failure:
 mov eax,1
-pop dx
+pop edx
 ret
 
 ps2_disable:
-push dx
+push edx
 ; disable ps2 device
 mov dx,PS2_COMMAND
 mov al,0xad
@@ -104,12 +106,12 @@ out dx,al
 
 mov al,0xa7
 out dx,al
-pop dx
+pop edx
 ret
 
 ; flush the output buffer
 ps2_flush_output:
-push dx
+push edx
 .clear_output:
 mov dx,PS2_STATUS
 in al,dx
@@ -121,11 +123,11 @@ mov dx,PS2_DATA
 in al,dx
 jmp .clear_output
 .clear_done:
-pop dx
+pop edx
 ret
 
 ps2_check_2_channels_and_disable:
-push dx
+push edx
 ; check if there are 2 channels
 ; enable the 2nd port
 mov dx,PS2_COMMAND
@@ -190,19 +192,20 @@ cmp al,0
 jne .wait2
 
 mov dx,PS2_DATA
+mov al,ah
 out dx,al
 
 mov byte [ps2_has_two_channels], 1
 mov ax,1 
-pop dx
+pop edx
 ret
 .two_channel_done:
 mov byte [ps2_has_two_channels], 0
 mov ax,0
-pop dx
+pop edx
 ret
 ps2_interface_test:
-push dx
+push edx
 ; test the ports
 mov dx,PS2_COMMAND
 mov ax,0xab
@@ -248,31 +251,31 @@ mov ax,2
 jne .kb_interface_test_failure
 .check_port_2_done:
 mov ax,0
-pop dx
+pop edx
 ret
 .kb_interface_test_failure:
 
-pop dx
+pop edx
 ret
 ps2_enable_first:
-push dx
+push edx
 mov dx,PS2_COMMAND
 mov ax,0xae
 out dx,al
 
-pop dx
+pop edx
 ret
 ps2_enable_second:
-push dx
+push edx
 mov dx,PS2_COMMAND
 mov ax,0xa8
 out dx,al
 
-pop dx
+pop edx
 ret
 ps2_reset_device:
-push dx
-push bx
+push edx
+push ebx
 mov bx,0
 mov dx,PS2_DATA
 mov ax,0xff
@@ -321,14 +324,30 @@ cmp al,0
 jne .ps2_reset_success ; dev id not finished yet
 
 mov ax,0
-pop bx
-pop dx
+pop ebx
+pop edx
 ret
 .ps2_reset_failed:
 mov ax,1
-pop bx
-pop dx
+pop ebx
+pop edx
 ret
+ps2_enable_scanning:
+push edx
+; wait for the output buffer to be empty
+.wait:
+mov dx,PS2_STATUS
+in al,dx
+and al,2
+cmp al,0
+jne .wait
 
+; send the command
+mov dx,PS2_DATA
+mov al,0xf4
+out dx,al
+
+pop edx
+ret
 section .data
 ps2_has_two_channels db 0

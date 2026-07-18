@@ -10,4 +10,10 @@ extern void ps2_enable_second();
 extern void ps2_disable();
 extern void ps2_flush_output();
 extern int ps2_reset_device();
+extern void ps2_enable_scanning();
 int ps2_init();
+
+
+#define PS2_DATA 0x60
+#define PS2_STATUS 0x64
+#define PS2_COMMAND 0x64
