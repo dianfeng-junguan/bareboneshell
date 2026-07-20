@@ -8,6 +8,7 @@ mov ds,ax
 mov es,ax
 mov ax,0x18
 mov ss,ax
+mov esp,0x7c00
 
 ; set up idt
 

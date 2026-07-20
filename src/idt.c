@@ -177,22 +177,22 @@ void idt_init(){
     idt_fill_descriptor(&idt[20], (UINT32)isr20_virtualization,       0x8, IDT_FLAG_TRAP32);
 
     /* register PIC IRQ handlers at vectors 32..47 */
-    idt_fill_descriptor(&idt[32], (UINT32)irq0_timer,                  0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[33], (UINT32)irq1_keyboard,               0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[34], (UINT32)irq2_cascade,                0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[35], (UINT32)irq3_serial2,                0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[36], (UINT32)irq4_serial1,                0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[37], (UINT32)irq5_parallel2,              0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[38], (UINT32)irq6_floppy,                 0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[39], (UINT32)irq7_parallel1,              0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[40], (UINT32)irq8_rtc,                    0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[41], (UINT32)irq9_legacy,                 0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[42], (UINT32)irq10_reserved,              0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[43], (UINT32)irq11_reserved,              0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[44], (UINT32)irq12_ps2_mouse,             0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[45], (UINT32)irq13_fpu,                    0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[46], (UINT32)irq14_primary_ata,           0x8, IDT_FLAG_TRAP32);
-    idt_fill_descriptor(&idt[47], (UINT32)irq15_secondary_ata,         0x8, IDT_FLAG_TRAP32);
+    idt_fill_descriptor(&idt[32], (UINT32)irq0_timer,                  0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[33], (UINT32)irq1_keyboard,               0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[34], (UINT32)irq2_cascade,                0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[35], (UINT32)irq3_serial2,                0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[36], (UINT32)irq4_serial1,                0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[37], (UINT32)irq5_parallel2,              0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[38], (UINT32)irq6_floppy,                 0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[39], (UINT32)irq7_parallel1,              0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[40], (UINT32)irq8_rtc,                    0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[41], (UINT32)irq9_legacy,                 0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[42], (UINT32)irq10_reserved,              0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[43], (UINT32)irq11_reserved,              0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[44], (UINT32)irq12_ps2_mouse,             0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[45], (UINT32)irq13_fpu,                   0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[46], (UINT32)irq14_primary_ata,           0x8, IDT_FLAG_INT32);
+    idt_fill_descriptor(&idt[47], (UINT32)irq15_secondary_ata,         0x8, IDT_FLAG_INT32);
 
     // load idt
     __asm__ volatile("lidt %0"::"m"(idtr));

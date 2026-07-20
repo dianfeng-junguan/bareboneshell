@@ -46,7 +46,7 @@ a20_failmsg: db "Failed to enable the A20. There might be some problems with the
 disk_read_address_packet:
     db 0x10
     db 0
-    dw 0x10 ; 16 sectors to read
+    dw 0x20 ; 32 sectors to read
     ; so we will transfer data to 0x7e00, right after the bootloader
     dw 0 ; offset addr as dst
     dw 0x7e0 ;segment address as dst
